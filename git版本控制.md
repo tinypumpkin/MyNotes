@@ -125,6 +125,13 @@ git remote add origin git remote add origin https://github.com/tinypumpkin/test1
 ```shell
 git push -u origin master
 ```
+3. 远程库不为空 -- 远程库与本地同步
+```shell
+#本地同步
+git pull --rebase origin master
+推送
+git push -u origin master
+```
 + 删除库 -- 打开项目目录-->settings-->拉到底-->Delete this repository
 ![8.png](https://i.loli.net/2020/06/12/QX5j971Pv2mDVol.png)
 + GitHub上克隆一个项目
