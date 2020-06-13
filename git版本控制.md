@@ -129,7 +129,7 @@ git push -u origin master
 ```shell
 #本地同步
 git pull --rebase origin master
-推送
+#推送
 git push -u origin master
 ```
 + 删除库 -- 打开项目目录-->settings-->拉到底-->Delete this repository
