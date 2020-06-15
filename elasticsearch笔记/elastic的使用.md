@@ -1,4 +1,4 @@
-# elasticsearch是使用
+# elasticsearch的使用
 
 elasticsearch的基本概念
 
