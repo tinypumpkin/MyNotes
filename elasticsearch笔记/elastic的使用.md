@@ -11,17 +11,28 @@ elasticsearch的基本概念
 |document|类似于rdbms的 row、面向对象里的object|
 |field|相当于字段、属性|
 
+>新建数据
+```sql
+PUT customer0105/_doc/1
+{
+  "id":"0101",
+  "name":"zhaoyu"
+}
+```
 >查询各个节点状态
 ```sql
-GET /_cat/nodes?v  
+GET _cat/nodes?v  
 ```
->查询各个索引状态
+>查询各个索引(健康)状态 
+1. green只是一个分布式副本
+2. yello没有副本,主数据完整
+3. red主数据不完整
 ```sql
-GET /_cat/indices?v  
+GET _cat/indices?v
 ```
 >查询某个索引的分片情况 
 ```sql
-GET /_cat/shards/xxxx         
+GET _cat/shards/customer0105         
 ```
 ## elasticsearch restful api (DSL)
 DSL全称 Domain Specific language，即特定领域专用语言。
