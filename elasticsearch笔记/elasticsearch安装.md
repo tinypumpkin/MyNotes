@@ -111,6 +111,10 @@ vim  /opt/module/elasticsearch/config/jvm.options
 1. node-xx
 2. network-host hadoop100 
 + 还要记得把 三台主机的node.name改成各自的
+>将es.sh群起脚本拷贝到hadoop100上运行
+```bash 
+sh es.sh start
+```
 > 测试
 ```bash
 curl http://hadoop100:9200/_cat/nodes?v
