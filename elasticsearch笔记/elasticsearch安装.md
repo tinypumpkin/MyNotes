@@ -133,7 +133,7 @@ cd /opt/module/kibana
 ```
 + 配置
 ```bash
-vim /opt/module/config/kibana.yml
+vim /opt/module/kibana/config/kibana.yml
 ```
 ```yml
 # To allow connections from remote users, set this parameter to a non-loopback address.
