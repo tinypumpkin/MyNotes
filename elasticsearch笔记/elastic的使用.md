@@ -1,5 +1,6 @@
 # elasticsearch是使用
-## elasticsearch的基本概念
+
+elasticsearch的基本概念
 
 |cluster|整个elasticsearch 默认就是集群状态，整个集群是一份完整、互备的数据|
 |---|---|
@@ -10,9 +11,18 @@
 |document|类似于rdbms的 row、面向对象里的object|
 |field|相当于字段、属性|
 
-+ GET /_cat/nodes?v  查询各个节点状态
-+ GET /_cat/indices?v  查询各个索引状态
-+ GET /_cat/shards/xxxx  查询某个索引的分片情况        
+>查询各个节点状态
+```sql
+GET /_cat/nodes?v  
+```
+>查询各个索引状态
+```sql
+GET /_cat/indices?v  
+```
+>查询某个索引的分片情况 
+```sql
+GET /_cat/shards/xxxx         
+```
 ## elasticsearch restful api (DSL)
 DSL全称 Domain Specific language，即特定领域专用语言。
 >es中保存的数据结构
