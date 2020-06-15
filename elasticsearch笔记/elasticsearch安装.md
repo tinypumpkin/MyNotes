@@ -19,7 +19,7 @@ vim /opt/module/elasticsearch/config/elasticsearch.yml
 #
 cluster.name: my-es
 ```
-+ 每个节点名称
++ 每个节点名称（不同节点节点名不同 node-1，node-2，node-3）
 ```yml
 # Use a descriptive name for the node:
 #
