@@ -109,7 +109,7 @@ vim  /opt/module/elasticsearch/config/jvm.options
 3. 在三台机器能够独立启动的情况下，修改/etc/elasticsearch/elasticsearch.yml
 >设置新主机的“报道中心”  
 1. node-xx
-2. network-host hadoop1 
+2. network-host hadoop100 
 + 还要记得把 三台主机的node.name改成各自的
 > 测试
 ```bash
