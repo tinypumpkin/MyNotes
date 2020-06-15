@@ -142,4 +142,9 @@ server.host: "0.0.0.0"
 # The URLs of the Elasticsearch instances to use for all your queries.
 elasticsearch.hosts: ["http://hadoop100:9200"]
 ```
-+ 启动,测试访问<http://hadoop100:5601/>
++ 在es启动的状态下启动kibana
+```bash
+cd /opt/module/kibana/bin
+./kibana
+```
++ 测试访问<http://hadoop100:5601/>
