@@ -1,9 +1,9 @@
 # elasticsearch的使用
 
 elasticsearch的基本概念
-
-|cluster|整个elasticsearch 默认就是集群状态，整个集群是一份完整、互备的数据|
+|es元素|es元素所表示的含义|
 |---|---|
+|cluster|整个elasticsearch 默认就是集群状态，整个集群是一份完整、互备的数据|
 |node|集群中的一个节点，一般只一个进程就是一个node|
 |shard|分片，即使是一个节点中的数据也会通过hash算法，分成多个片存放，默认是5片。（7.0默认改为1片）|
 |index|相当于rdbms的database(5.x), 对于用户来说是一个逻辑数据库，虽然物理上会被分多个shard存放，也可能存放在多个node中。   6.x 7.x index相当于table|
@@ -30,7 +30,7 @@ GET _cat/nodes?v
 ```sql
 GET _cat/indices?v
 ```
->查询某个索引的分片情况 
+>查询索引customer0105的分片情况 
 ```sql
 GET _cat/shards/customer0105         
 ```
@@ -67,9 +67,9 @@ String name;
 GET /_cat/indices?v
 ```
 表头的含义
-
-|health|green(集群完整) yellow(单点正常、集群不完整) red(单点不正常)|
+|表头|表头代表内容|
 |---|---|
+|health|green(集群完整) yellow(单点正常、集群不完整) red(单点不正常)|
 |status|是否能使用|
 |index|索引名|
 |uuid|索引统一编号|         
@@ -241,8 +241,9 @@ GET movie_index/movie/_search
 }
 ```
 关于范围操作符：
-|gt|大于|
+|操作符|含义|
 |--|--|  
+|gt|大于|
 |lt|小于|
 |gte|大于等于 great than or equals|
 |lte|小于等于 less than or equals|
