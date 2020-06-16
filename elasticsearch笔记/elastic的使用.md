@@ -72,7 +72,7 @@ GET /_cat/indices?v
 |health|green(集群完整) yellow(单点正常、集群不完整) red(单点不正常)|
 |status|是否能使用|
 |index|索引名|
-|uuid|索引统一编号|         
+|uuid|索引统一编号|
 |pri|主节点几个|
 |rep|从节点几个|
 |docs.count|文档数|
@@ -242,7 +242,7 @@ GET movie_index/movie/_search
 ```
 关于范围操作符：
 |操作符|含义|
-|--|--|  
+|--|--|
 |gt|大于|
 |lt|小于|
 |gte|大于等于 great than or equals|
@@ -336,12 +336,25 @@ GET movie_index/movie/_search
 elasticsearch本身自带的中文分词，就是单纯把中文一个字一个字的分开，根本没有词汇的概念。
 + 安装
 1. 下载elasticsearch-analysis-ik的zip包
-2. 解压后放到./elasticsearch/plugins/ik
+2. 解压到./elasticsearch/plugins/ik
 3. 安装后重启es
 ```bash
+cd /opt/module/elasticsearch/plugins
+
+mkdir ik
+
+mv elasticsearch-analysis-ik-xxx.zip /opt/module/elasticsearch/plugins/ik
+
+cd /opt/module/elasticsearch/plugins/ik
+
 tar -zxvf elasticsearch-analysis-ik-xxx.zip  
-mv elasticsearch-analysis-ik-xxx ik
-mv ik /opt/module/elasticsearch/plugins/ik
+
+sh 启动/es.sh stop
+
+sh 启动/es.sh start
+
+cd /opt/module/kibana/bin
+./kibana
 ```
 + 测试使用
 1. 默认
