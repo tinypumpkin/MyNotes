@@ -347,7 +347,9 @@ mv elasticsearch-analysis-ik-xxx.zip /opt/module/elasticsearch/plugins/ik
 
 cd /opt/module/elasticsearch/plugins/ik
 
-tar -zxvf elasticsearch-analysis-ik-xxx.zip  
+unzip elasticsearch-analysis-ik-xxx.zip  
+
+rm elasticsearch-analysis-ik-xxx.zip  
 
 sh 启动/es.sh stop
 
