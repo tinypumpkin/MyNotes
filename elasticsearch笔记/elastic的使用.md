@@ -1,7 +1,7 @@
 # elasticsearch的使用
 
 elasticsearch的基本概念
-|es元素|es元素所表示的含义|
+|es组件|es组件所表示的含义|
 |---|---|
 |cluster|整个elasticsearch 默认就是集群状态，整个集群是一份完整、互备的数据|
 |node|集群中的一个节点，一般只一个进程就是一个node|
