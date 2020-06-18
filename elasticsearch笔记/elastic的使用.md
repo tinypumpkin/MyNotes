@@ -164,7 +164,7 @@ GET movie_index/movie/_search
 |from,size|分页匹配|每页显示多少行(from:从第几行开始,size:每页显示多少个)|
 |range|按范围匹配|gte：大于，lte：小于按区间匹配|
 |sort|排序|desc/asc（指定排序后默认相关度排序失效）|
-|aggs:{name:{agg_type}}|聚合|<font color=blue>聚合-->aggs</font>,<font color=blue>分组-->terms</font>   常用方法(sum min max avg)  stats--聚合全家桶|
+|aggs:{name:{agg_type}}|聚合|<font color=blue>聚合-->aggs</font>，<font color=blue>分组-->terms</font>，   常用方法(sum min max avg)  ，stats--聚合全家桶|
 
 + 按条件查询(全部)
 ```sql
