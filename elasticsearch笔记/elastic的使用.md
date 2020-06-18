@@ -530,7 +530,7 @@ GET /movie_chn/movie/_search
 3.	在运行的集群中可以无缝的从一个索引切换到另一个索引
 + 创建索引别名（建表时直接声明）
 ```sql
-PUT movie_chn_2020
+PUT movie_chn_xxxx
 {  "aliases": {
       "movie_chn_2020-query": {}
   }, 
