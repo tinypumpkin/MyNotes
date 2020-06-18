@@ -124,9 +124,9 @@ PUT /movie_index/movie/3
 ```sql
 GET movie_index/movie/1
 ```
-+ 修改—整体替换 (和新增没有区别  要求：必须包括全部字段)
++ 修改—整体替换  格式:PUT /index/type/id{内容} (和新增没有区别  要求：必须包括全部字段)
 ```sql
-PUT /movie_index/movie/3
+PUT /movie_index/movie/3 --幂等性
 {
   "id":"3",
   "name":"incident red sea",
@@ -135,15 +135,15 @@ PUT /movie_index/movie/3
 {"id":"1","name":"zhang chen"}
 ]}
 ```
-+ 修改—某个字段
++ 修改—某个字段 格式：POST index/type/id/_update {修改内容}
 ```sql
-POST movie_index/movie/3/_update
+POST movie_index/movie/3/_update --非幂等性
 { 
   "doc": {
     "doubanScore":"7.0"
   } }
 ```
-+ 删除一个document
++ 删除一个document 格式: DELETE/index/type/id
 ```sql
 DELETE movie_index/movie/3
 ```
@@ -151,7 +151,21 @@ DELETE movie_index/movie/3
 ```sql
 GET movie_index/movie/_search
 ```
->查询
+>查询操作
+
+|关键字|匹配模式|说明|
+|---|---|---|
+|match|分词匹配|使用分词，text类型是专用分词字段|
+|term|值等匹配|使用keyword，不分词字段|
+|watch_phrase|短语匹配|将查询字段周围短语匹配(不进行分词)|
+|fuzzy|容错匹配|查询输出相似度最高的结果|
+|match...post_filter|混合查询-1|先匹配后过滤|
+|bool:{must:[match...]，filter}|混合查询-2|同时匹配+过滤|
+|from,size|分页匹配|每页显示多少行(from:从第几行开始,size:每页显示多少个)|
+|range|按范围匹配|gte：大于，lte：小于按区间匹配|
+|sort|排序|desc/asc（指定排序后默认相关度排序失效）|
+|aggs:{name:{agg_type}}|聚合|<font color=blue>聚合-->aggs</font>,<font color=blue>分组-->terms</font>   常用方法(sum min max avg)  stats--聚合全家桶|
+
 + 按条件查询(全部)
 ```sql
 GET movie_index/movie/_search
