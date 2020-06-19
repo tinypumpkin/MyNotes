@@ -604,7 +604,7 @@ POST /_aliases
 ```sql
 GET  _cat/aliases?v
 ```
-### 索引模板 
+### 索引模板 -- ES在没有索引的时候使用自动推断来建立索引
 创建索引的模具,可定义一系列规则构建符合特定业务需求的索引的 mappings 和 settings，通过使用 Index Template(索引模板)可以让我们的索引具备可预知的一致性。
 > 分割索引（常见场景）
 + 分割索引就是根据时间间隔把一个业务索引切分成多个索引。
@@ -661,3 +661,4 @@ GET  _template/template_movie2020
 或者
 GET  _template/template_movie*
 ```
++ <font color=red>注意</font> 如果es 中的shard 特别多 有可能创建索引会变慢 ，如果延迟不能接受  建议别用模板 而是用定时脚本建立
