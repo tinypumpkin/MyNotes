@@ -203,7 +203,7 @@ values(101,'sku_001',1000.00,'2020-06-01 12:00:00') ,
 (102,'sku_002',600.00,'2020-06-02 12:00:00')
 ```
 MergeTree有很多参数(绝大多数用默认值),但是三个参数(engine,primary key,order by)必填
-> ReplacingMergeTree
+> ReplacingMergeTree -- 去重
 
 MergeTree的一个变种，它存储特性完全继承MergeTree，只是多了一个去重的功能。
 
@@ -248,7 +248,7 @@ OPTIMIZE TABLE t_rep FINAL
 2. 只有合并分区才会进行去重。
 3. 认定重复的数据保留，版本字段值最大的。
 4. 如果版本字段相同则保留最后一笔。
->SummingMergeTree
+>SummingMergeTree -- 预聚合
 
 对于`不查询明细，只关心以维度进行汇总聚合结果`的场景。如果只使用普通的MergeTree的话，无论是存储空间的开销，还是查询时临时聚合的开销都比较大。
 Clickhouse 为了这种场景，提供了一种能够`预聚合`的引擎，SummingMergeTree.
@@ -278,7 +278,7 @@ values(101,'sku_001',1000.00,'2020-06-01 12:00:00') ,
 optimize table t_smt final;
 ```
 + 结论
-1. 以SummingMergeTree（）中指定的列作为汇总数据列。
+1. 以SummingMergeTree（）中指定的列作为汇总数据列,可填写多列但必须是数字列，不填则以所有非维度列且为数字列的字段为汇总数据列。
 2. 以order by 的列为准，作为维度列。
 3. 其他的列保留最后一行。
 4. 不在一个分区的数据不会被聚合。
@@ -381,3 +381,74 @@ alter table t_ttl MODIFY TTL create_time + INTERVAL 10 SECOND;
 SECOND，MINUTE，HOUR，DAY，WEEK，MONTH，QUARTER，YEAR 
 
 ## 三、SQL操作
+> Insert 
++ 插入操作--基本与标准SQL一致
+```sql
+--标准插入
+insert into [表名]values(...),(...)
+--表到表
+insert into  [表1] select a,b,c from [表2]
+```
+> Update 和 Delete 
++ Mutation查询 -- 可以看做Alter 的一种。
+
+虽然可以实现修改和删除，但是和一般的OLTP数据库不一样，Mutation语句是一种很`重`的操作，而且`不支持事务`。
+
+`重`的原因主要是每次修改或者删除都会导致放弃目标数据的原有分区，重建新分区。所以尽量做批量的变更，不要进行频繁小数据的操作（`修改数据结构`）。
+
++ 删除操作
+```sql
+alter table t_smt delete where sku_id ='sku_001';
+```
++ 修改操作
+```sql
+alter table t_smt 
+update total_amount=toDecimal32(2000.00,2) 
+where id =102;
+```
+由于操作比较`重`，所以 Mutation语句分两步执行，
+1. 标记-->新增数据新增分区和并把旧分区打上逻辑上的失效标记。
+2. 执行-->触发分区合并时，删除标记失效的旧数据释放磁盘空间。
+>select -- 查询操作
++ 支持子查询
++ 支持CTE(with 子句) 
++ 支持各种JOIN， 但是JOIN操作无法使用缓存,所以即使是两次相同的JOIN语句,Clickhouse也会视为两条新SQL。
++ 不支持窗口函数。
++ 不支持自定义函数。
++ GROUP BY 操作增加了 `with rollup\with cube\with total` 用来计算小计和总计。
+
+with rollup : `从右至左`去掉维度进行小计
+```sql
+select id , sku_id,sum(total_amount) from  t_smt group by id,sku_id with rollup;
+```
+ with cube : 先`从右至左去掉维度`进行小计，再从`左至右去掉维度`进行小计
+ ```sql
+ select id , sku_id,sum(total_amount) from  t_smt group by id,sku_id with cube;
+ ```
+ with totals: 只计算合计
+ ```sql
+ select id,sku_id,sum(total_amount) from  t_smt group by id,sku_id with totals;
+ ```
+>Alter -- 同mysql的修改字段基本一致
+
+新增字段
+```sql
+alter table 表名  add column  列名  String after col1
+```
+修改字段类型
+```sql
+alter table 表名  modify column  列名  String    ；
+```
+删除字段
+```sql
+alter table 表名  drop column  列名   ;
+```
+>导出数据--客户端导出
+```bash
+clickhouse-client  --query    "select Hour(create_time) hr  ,count(*) from 库名.order_wide where dt='2020-06-23'  group by hr" --format CSVWithNames> ~/out.csv
+```
+## 副本
+保障数据的高可用性，即使一台clickhouse节点宕机，那么也可以从其他服务器获得相同的数据。
+>副本写入流程
+
+client -- 写入数据-->clickhouse1-->zookeeper-->clickhouse2
