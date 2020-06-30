@@ -236,6 +236,7 @@ vim /etc/clickhouse-server/config.d/metrika-shard.xml
 </yandex> 
 ```
 ![4.png](https://i.loli.net/2020/06/30/iNOVqLuDnIw5WX8.png)
+
 配置宏
 |hadoop100|hadoop101|hadoop102|
 |---|---|---|
