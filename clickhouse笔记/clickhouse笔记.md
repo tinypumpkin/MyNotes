@@ -465,3 +465,13 @@ Distributed表引擎本身不存储数据，有点类似于MyCat之于MySql，�
 ![2.png](https://i.loli.net/2020/06/30/7jLgmirYvOfVM4G.png)
 
 ![3.png](https://i.loli.net/2020/06/30/1zfaDIwJnGL2tgo.png)
+
+## clickhouse的使用
+>启动ClickServer
+```bash
+sudo systemctl start clickhouse-server
+```
+>客户端连接服务端
+```bash
+clickhouse-client -m
+```
