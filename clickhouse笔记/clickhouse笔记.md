@@ -452,3 +452,15 @@ clickhouse-client  --query    "select Hour(create_time) hr  ,count(*) from 库�
 >副本写入流程
 
 client -- 写入数据-->clickhouse1-->zookeeper-->clickhouse2
+
+## 分片集群
+副本虽然能够提高数据的可用性，降低丢失风险，但是对数据的横向扩容没有解决。每台机子实际上必须容纳全量数据。
+
+要解决数据水平切分的问题，需要引入分片的概念。通过分片把一份完整的数据进行切分，不同的分片分布到不同的节点上。在通过Distributed表引擎把数据拼接起来一同使用。
+
+Distributed表引擎本身不存储数据，有点类似于MyCat之于MySql，成为一种中间件，通过分布式逻辑表来写入、分发、路由来操作多台节点不同分片的分布式数据。
+
+#### 读写原理
+![2.png](https://i.loli.net/2020/06/30/7jLgmirYvOfVM4G.png)
+
+![3.png](https://i.loli.net/2020/06/30/1zfaDIwJnGL2tgo.png)
