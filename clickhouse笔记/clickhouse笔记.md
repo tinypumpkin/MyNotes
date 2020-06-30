@@ -461,6 +461,7 @@ client -- 写入数据-->clickhouse1-->zookeeper-->clickhouse2
 Distributed表引擎本身不存储数据，有点类似于MyCat之于MySql，成为一种中间件，通过分布式逻辑表来写入、分发、路由来操作多台节点不同分片的分布式数据。
 
 #### 读写原理
+
 ![2.png](https://i.loli.net/2020/06/30/7jLgmirYvOfVM4G.png)
 
 ![3.png](https://i.loli.net/2020/06/30/1zfaDIwJnGL2tgo.png)
