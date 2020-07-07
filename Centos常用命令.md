@@ -124,3 +124,20 @@ lsof -i:端口号
 #通过grep过滤，awk空格分行，xargs拿到第一行参数 将参数传给 kill
 ps -ef | grep 任务名称 | grep -v grep | grep -v stopapp.sh | awk '{print $2}' | xargs -n1 kill -9
 ```
+### shell常用工具
+awk 、sed 、 sort 、 cut
+### 单引号与双引号的区别
++ 单引号:引号内部的变量不能取出内部变量对应的值
+```bash
+'$do_date'
+```
++ 双引号:引号内部的变量能够取出内部变量对应的值
+```bash
+"$do_date"
+```
++ 嵌套: 由最外层的决定 
+```bash
+"'$do_date'" 
+
+'"$do_date"'
+```
