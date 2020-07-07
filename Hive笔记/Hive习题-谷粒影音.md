@@ -73,7 +73,7 @@ select category,hot from t2 order by t2.hot desc limit 10
 --2 把这20条信息中的category分裂出来(列转行)
 --3 最后查询视频分类名称和该分类下有多少个Top20的视频
 
-(select * from gulivideo_orc order by views desc;)t1
+(select * from gulivideo_orc order by views desc limit 20;)t1
 select 
 category count(*)
 from t1 
@@ -83,38 +83,63 @@ group by ca
 ```
 4.  统计视频观看数Top50所关联视频的所属类别排序
 ```sql
---未知的
-select category t2.num
-from 
-(select 
-sum() num
-from
-(select 
-related lds 
-from gulivideo_orc
-order by views desc limit 50) t1
-later view
-explode(t1.related lds) rel as re
-group by re)t2 order by num ; 
-```
-5.  统计每个类别中的视频热度Top10
-```sql
-select * from
-(select *
-from gulivideo_orc)t1
-later view
-explode(t1.category) cats as cat
-group by cat;
-```
-6.  统计每个类别中视频流量Top10
-```sql
+--前50观看的视频
+(select * from gulivideo_orc 
+order by views desc limit 50)t1
 
+--炸开关联,join视频id
+(select 
+distinct r_id,
+category
+explode(related ids) r_id
+from t1.related_ids
+join
+(select videoid from t1)
+on videoid=r_id)t2
+--炸开类别
+(select explode(category) cat from t2)t3
+--join类别热度表排序
+(select 
+cat,sum(views) hot
+from gulivideo_orc
+explode(category)cat
+where views group by cat)t4
+--最终表
+select distinct t3.cat, hot from t3 join t4 
+on t3.cat=t4.cat
+order by hot desc
+
+```
+5.  统计每个类别中的视频热度Top10(Music为例)
+```sql
+--创建中间表
+create table video_cat 
+stored as orc tblproperties("orc.compress"="lzo") 
+as select 
+ videoid,
+ views, 
+ cat,
+ ratings
+from gulivideo_orc 
+lateral viev
+explode(category) cate as cat;
+--类别热度表
+select videoid,views hot from video_cat where cat=music order by hot desc limit 10; 
+```
+6.  统计每个类别中视频流量Top10(music为例)
+```sql
+select ratings rat from video_cat where cat=music order by rat desc limit 10; 
 ```
 7.  统计上传视频最多的用户Top10以及他们上传的观看次数在前20的视频
 ```sql
-
+--统计上传视频最多的用户Top10
+(select uploader,num from gulivideo_user_orc order by videos desc limit 10)t1
+--最多的用户上传的观看次数在前20的视频
+select videoid,views top from gulivideo_orc join t1 
+on t1.uploader=gulivideo_orc.uploader order by top desc limit 20;
 ```
 8.  统计每个类别视频观看数Top10
 ```sql
 
 ```
+
