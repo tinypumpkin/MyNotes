@@ -135,11 +135,25 @@ select ratings rat from video_cat where cat=music order by rat desc limit 10;
 --统计上传视频最多的用户Top10
 (select uploader,num from gulivideo_user_orc order by videos desc limit 10)t1
 --最多的用户上传的观看次数在前20的视频
-select videoid,views top from gulivideo_orc join t1 
-on t1.uploader=gulivideo_orc.uploader order by top desc limit 20;
+select videoid,views top 
+Rank() over(Partition by t1.uploader order by views desc) top
+from gulivideo_orc join t1 
+on t1.uploader=gulivideo_orc.uploader;
 ```
 8.  统计每个类别视频观看数Top10
-```sql
-
-```
-
+    8.1 video_cat查出每个类别视频观看排名
+    
+    ```sql
+    (select
+    cat,
+    videoid,
+    views
+  rank()over(partition by cat order by views desc)hot
+    from 
+    video_cat)t1
+    ```
+      8.2 取每个类别Top10
+    ```sql
+    select cat,videoid,views
+    from t1 where hot<=10;
+    ```
