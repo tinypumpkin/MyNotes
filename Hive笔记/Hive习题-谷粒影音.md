@@ -148,7 +148,7 @@ on t1.uploader=gulivideo_orc.uploader;
     cat,
     videoid,
     views
-  rank()over(partition by cat order by views desc)hot
+    rank()over(partition by cat order by views desc)hot
     from 
     video_cat)t1
     ```
