@@ -268,7 +268,7 @@ business
 >排名
 + rank（）--->编号相同，下一个编号会跳过
 + dense_rank（）--->编号相同，下一个编号连续
-+ row_number（）--->不管Colum想不想同，连续编号
++ row_number（）--->不管Colum相不相同，连续编号
 
 |row_number|rank|dense_rank|
 |------|------|------|
